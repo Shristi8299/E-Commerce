@@ -4,7 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 export default function Navbar() {
   return (
-    <nav className="bg-white-500 sticky top-0 z-50 flex justify-between items-center  space-x-6  px-6 py-2 border-b border-gray-300 h-15">
+    <nav className="bg-white sticky top-0 z-50 flex justify-between items-center  space-x-6  px-6 py-2 border-b border-gray-300 h-15">
       {/* logo */}
       <Link to="/" className="text-2xl font-bold text-black">
         ShopEase

@@ -12,7 +12,7 @@ const contentStyle: React.CSSProperties = {
 export default function Home() {
   return (
     // hero section
-    <div>
+    <div className=" min-h-screen">
       <Carousel autoplay>
         <div>
           <img

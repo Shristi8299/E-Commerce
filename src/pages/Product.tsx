@@ -14,13 +14,11 @@ export default function Product() {
   ];
   return (
     <div className="flex gap-2 px-4 flex-wrap flex-1">
-     {
-      Products.map((data)=>{
-        return (
-          <Cards item={data.item} />
-        )
-      })
-     }
+      {/* {Products.map((data) => { */}
+      {Products.map(({ item }) => {
+        // return <Cards item={data.item} />;
+        return <Cards item={item} />;
+      })}
     </div>
   );
 }
