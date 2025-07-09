@@ -41,7 +41,7 @@ export default function Navbar() {
       {/* login and signup */}
 
       <div className=" flex items-center justify-between space-x-5 mr-2">
-        <NavLink to="/cart">
+        <NavLink to="/carts">
           <ShoppingCart />
         </NavLink>
         <button className=" hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1">
