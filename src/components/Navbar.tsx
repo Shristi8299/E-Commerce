@@ -11,7 +11,7 @@ export default function Navbar() {
       </Link>
 
       {/* Navigation Link */}
-      <div className="flex justify items-center space-x-6">
+      <div className="justify items-center space-x-6 hidden md:flex ">
         <NavLink to="/" className="hover:underline">
           Home
         </NavLink>
@@ -27,7 +27,7 @@ export default function Navbar() {
       </div>
 
       {/* search link */}
-      <div className="relative ">
+      <div className="relative hidden md:block">
         <Search className="absolute left-3 top-1.5" />
         <form action="" className="flex items-center ">
           <input
