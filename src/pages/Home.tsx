@@ -1,6 +1,7 @@
 import React from "react";
 import { Carousel } from "antd";
 import Cards from "../components/Cards";
+import { products, trendings , arr1 } from "@/data/products";
 
 const contentStyle: React.CSSProperties = {
   height: "400px",
@@ -43,51 +44,40 @@ export default function Home() {
       </h1>
       <div className="flex justify-center">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product1.jpg"}
-          />
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product2.jpg"}
-          />
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product3.jpg"}
-          />
+           {
+            arr1.map((item)=>{
+               if(item.section == "trending"){
+                  return (
+                <>
+                <Cards imageUrl={item.imageUrl} item1={item.item} description1={item.description} price1={item.price} />
+                </>
+               )
+               }
+            })
+          }
         </div>
       </div>
       <h1 className="text-3xl text-red-600 font-bold text-center py-2 animate-marquee ">
         New Arrivals
       </h1>
-      <div className="flex justify-center">
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product4.jpg"}
-          />
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product5.jpg"}
-          />
-          <Cards
-            item1={"Tshirt"}
-            description1={"Regular cotton t-shirt"}
-            price1={1000}
-            imageUrl={"images/product6.jpg"}
-          />
+       <div className="flex justify-center">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+          {
+            arr1.map((item)=>{
+               if(item.section == "newArrivals"){
+                  return (
+                <>
+                <Cards imageUrl={item.imageUrl} item1={item.item} description1={item.description} price1={item.price} />
+                </>
+               )
+               }
+            })
+          }
         </div>
       </div>
+
+     
     </div>
   );
 }
+
