@@ -1,10 +1,8 @@
-import { Link } from "react-router-dom";
-
 export default function Login() {
   return (
     <>
       <h1 className="font-bold text-center text-2xl mt-6">Log In</h1>
-      <div className="mt-4  flex justify-center px-4 ">
+      <div className="mt-4  flex justify-center px-4 py-4 ">
         <form className="w-full  max-w-md bg-white  py-15 p-6 rounded-xl   shadow-md hover:shadow-xl  space-y-4">
           <div>
             <input
