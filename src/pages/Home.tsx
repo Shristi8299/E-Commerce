@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel } from "antd";
 import Cards from "../components/Cards";
-import { products} from "@/data/products";
+// import { products} from "@/data/products";
+import axios from "axios";
+import type Product from "./Product";
 
 const contentStyle: React.CSSProperties = {
   height: "400px",
@@ -10,7 +12,27 @@ const contentStyle: React.CSSProperties = {
   textAlign: "center",
   background: "#a7abb7",
 };
+
+interface Product {
+  _id: string;
+  imageUrl: string;
+  item: string;
+  description: string;
+  price: number;
+  section: string;
+  createdAt: string; 
+  
+}
+
 export default function Home() {
+  const [apiproduct , setapiproduct] = useState<Product[]>();
+    useEffect(()=>{
+      const response = axios.get('http://localhost:3000/products');
+      response.then((data)=>{
+        setapiproduct(data.data);
+      })
+    },[]) 
+
   const arr = [
     {
       imgUrl: "images/photo1.jpg",
@@ -44,7 +66,8 @@ export default function Home() {
       <div className="flex justify-center">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
            {
-            products.map((item)=>{
+            apiproduct?.map((item)=>{
+
                if(item.section == "trendings"){
                   return (
                 <>
@@ -62,7 +85,7 @@ export default function Home() {
        <div className="flex justify-center">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
           {
-            products.map((item)=>{
+            apiproduct?.map((item)=>{
                if(item.section == "newarrivals"){
                   return (
                 <>

@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+
 export default function Login() {
+  
   return (
     <>
       <h1 className="font-bold text-center text-2xl mt-6">Log In</h1>
