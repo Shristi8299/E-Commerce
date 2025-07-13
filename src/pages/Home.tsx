@@ -88,6 +88,11 @@ export default function Home() {
           />
         </div>
       </div>
+      <div className=" fixed top-0 left-36 bg-black opacity-70 h-screen w-screen">
+        <ul>
+          <li className="">about</li>
+        </ul>
+      </div>
     </div>
   );
 }

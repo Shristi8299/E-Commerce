@@ -1,7 +1,28 @@
 import Cards from "@/components/Cards";
 import { products } from "@/data/products";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface Product {
+  _id: string;
+  imageUrl: string;
+  item: string;
+  description: string;
+  price: number;
+  section: string;
+  createdAt: string;
+}
 
 export default function Product() {
+  const [apiProducts, setApiProducts] = useState<Product[]>();
+  useEffect(() => {
+    const data = async () => {
+      const response = await axios.get("http://localhost:3000/products");
+      setApiProducts(response.data);
+    };
+    data();
+  });
+  console.log(apiProducts);
   return (
     <div className="flex flex-col items-center justify-center">
       <h1 className="">Trending</h1>
