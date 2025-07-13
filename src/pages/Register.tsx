@@ -4,7 +4,7 @@ export default function Register() {
   return (
     <>
     <h1 className="font-bold text-center text-2xl mt-6">Create Account</h1>
-    <div className="mt-4 flex justify-center px-4">
+    <div className="mt-4 flex justify-center px-4 py-4">
       <form className="w-full max-w-md bg-white p-6 rounded-xl   shadow-md hover:shadow-xl  space-y-4">
         <div> 
           

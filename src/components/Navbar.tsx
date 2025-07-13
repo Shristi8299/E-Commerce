@@ -1,57 +1,92 @@
-import { Search } from "lucide-react";
-import { ShoppingCart } from "lucide-react";
-
+import { Search, ShoppingCart, Menu, X } from "lucide-react";
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <nav className="bg-white sticky top-0 z-50 flex justify-between items-center  space-x-6  px-6 py-2 border-b border-gray-300 h-15">
-      {/* logo */}
-      <Link to="/" className="text-2xl font-bold text-black">
-        ShopEase
-      </Link>
+    <nav className="bg-white sticky top-0 z-50 border-b border-gray-300">
+      <div className="flex justify-between items-center px-6 py-2 h-16">
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-black">
+          ShopEase
+        </Link>
 
-      {/* Navigation Link */}
-      <div className="justify items-center space-x-6 hidden md:flex ">
-        <NavLink to="/" className="hover:underline">
-          Home
-        </NavLink>
-        <NavLink to="/Products" className="hover:underline">
-          Products
-        </NavLink>
-        <NavLink to="/about" className="hover:underline">
-          About
-        </NavLink>
-        <NavLink to="/contacts" className="hover:underline">
-          Contacts
-        </NavLink>
-      </div>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-6">
+          <NavLink to="/" className="hover:underline">Home</NavLink>
+          <NavLink to="/Products" className="hover:underline">Products</NavLink>
+          <NavLink to="/about" className="hover:underline">About</NavLink>
+          <NavLink to="/contacts" className="hover:underline">Contacts</NavLink>
+        </div>
 
-      {/* search link */}
-      <div className="relative hidden md:block">
-        <Search className="absolute left-3 top-1.5" />
-        <form action="" className="flex items-center ">
+        {/* Search Bar (Desktop) */}
+        <div className="relative hidden md:block">
+          <Search className="absolute left-3 top-1.5 text-gray-500" />
           <input
             type="text"
             placeholder="search product......"
-            className="border-1 border-gray-300 pl-10 px-3 py-1 rounded-xl "
+            className="border border-gray-300 pl-10 pr-3 py-1 rounded-xl"
           />
-        </form>
+        </div>
+
+        {/* Right Side - Cart & Auth */}
+        <div className="flex items-center space-x-4">
+          <NavLink to="/carts">
+            <ShoppingCart />
+          </NavLink>
+          <Link
+            to="/Login"
+            className="hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1"
+          >
+            Register
+          </Link>
+
+          {/* Hamburger Button (Mobile) */}
+          <button onClick={toggleMenu} className="md:hidden">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
-      {/* login and signup */}
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white px-6 py-4 shadow-md">
+          <ul className="flex flex-col space-y-4">
+            <li>
+              <NavLink to="/" onClick={closeMenu} className="hover:underline">
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/Products" onClick={closeMenu} className="hover:underline">
+                Products
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/about" onClick={closeMenu} className="hover:underline">
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contacts" onClick={closeMenu} className="hover:underline">
+                Contacts
+              </NavLink>
+            </li>
 
-      <div className=" flex items-center justify-between space-x-5 mr-2">
-        <NavLink to="/carts">
-          <ShoppingCart />
-        </NavLink>
-        <button className=" hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1">
-          <Link to="/Login">Login</Link>
-        </button>
-
-        <button className=" hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1">
-          <Link to="/register">Register</Link>
-        </button>
-      </div>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }
