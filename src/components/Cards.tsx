@@ -5,7 +5,7 @@ type PropsItem = {
   item1: string;
   description1: string;
   price1: number;
-  handleClick:()=>void
+  handleClick: () => void;
 };
 
 // export default function Cards(props:PropsItem) {
@@ -14,7 +14,7 @@ export default function Cards({
   item1,
   description1,
   price1,
-  handleClick
+  handleClick,
 }: PropsItem) {
   return (
     <Card
@@ -26,9 +26,7 @@ export default function Cards({
       <p className="font-bold">{item1}</p>
       <p>{description1}</p>
       <p className="font-black">&#8377;{price1}</p>
-      <Button buttonName={"Add to cart"} handleClick={function (): {} {
-        throw new Error("Function not implemented.");
-      } }/>
+      <Button buttonName={"Add to cart"} handleClick={handleClick} />
     </Card>
   );
 }

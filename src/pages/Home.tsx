@@ -26,6 +26,12 @@ interface Product {
 
 export default function Home() {
   const [apiproduct, setapiproduct] = useState<Product[]>();
+  // I added this to seperate the two sections trending and newarrival , take a look and try to understand it
+  const sections = [
+    { title: "Trendings", key: "trendings" },
+    { title: "New Arrivals", key: "newarrivals" },
+  ];
+
   useEffect(() => {
     const response = axios.get("http://localhost:3000/products");
     response.then((data) => {
@@ -59,58 +65,31 @@ export default function Home() {
       </Carousel>
       {/* <button className=' flex justify-center border-1 hover:shadow-gray-500 text-center rounded-sm p-2'>Shop Now</button> */}
 
-      {/* cards*/}
-      <h1 className="text-3xl text-red-600 font-bold text-center py-2">
-        Trendings
-      </h1>
-      <div className="flex justify-center">
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-          {apiproduct?.map((item) => {
-            if (item.section == "trendings") {
-              return (
-                <>
-                  <Link to={`/products/${item._id}`}>
+      {/* try to figure out how I combined it  */}
+      {sections.map((section) => (
+        <div key={section.key}>
+          <h1 className="text-3xl text-red-600 font-bold text-center py-2">
+            {section.title}
+          </h1>
+          <div className="flex justify-center">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
+              {apiproduct
+                ?.filter((item) => item.section === section.key)
+                .map((item) => (
+                  <Link to={`/products/${item._id}`} key={item._id}>
                     <Cards
                       imageUrl={item.imageUrl}
                       item1={item.item}
                       description1={item.description}
                       price1={item.price}
+                      handleClick={() => console.log("item added to cart")}
                     />
                   </Link>
-                </>
-              );
-            }
-          })}
+                ))}
+            </div>
+          </div>
         </div>
-      </div>
-      <h1 className="text-3xl text-red-600 font-bold text-center py-2  ">
-        New Arrivals
-      </h1>
-      <div className="flex justify-center">
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
-          {apiproduct?.map((item) => {
-            if (item.section == "newarrivals") {
-              return (
-                <>
-                  <Link to={`/products/${item._id}`}>
-                  <Cards
-                    imageUrl={item.imageUrl}
-                    item1={item.item}
-                    description1={item.description}
-                    price1={item.price}
-                  />
-                  </Link>
-                </>
-              );
-            }
-          })}
-        </div>
-      </div>
-      <div className=" fixed top-0 left-36 bg-black opacity-70 h-screen w-screen">
-        <ul>
-          <li className="">about</li>
-        </ul>
-      </div>
+      ))}
     </div>
   );
 }
