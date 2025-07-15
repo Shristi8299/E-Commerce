@@ -4,6 +4,7 @@ import Cards from "../components/Cards";
 // import { products} from "@/data/products";
 import axios from "axios";
 import type Product from "./Product";
+import { Link } from "react-router-dom";
 
 const contentStyle: React.CSSProperties = {
   height: "400px",
@@ -20,18 +21,17 @@ interface Product {
   description: string;
   price: number;
   section: string;
-  createdAt: string; 
-  
+  createdAt: string;
 }
 
 export default function Home() {
-  const [apiproduct , setapiproduct] = useState<Product[]>();
-    useEffect(()=>{
-      const response = axios.get('http://localhost:3000/products');
-      response.then((data)=>{
-        setapiproduct(data.data);
-      })
-    },[]) 
+  const [apiproduct, setapiproduct] = useState<Product[]>();
+  useEffect(() => {
+    const response = axios.get("http://localhost:3000/products");
+    response.then((data) => {
+      setapiproduct(data.data);
+    });
+  }, []);
 
   const arr = [
     {
@@ -65,39 +65,47 @@ export default function Home() {
       </h1>
       <div className="flex justify-center">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
-           {
-            apiproduct?.map((item)=>{
-
-               if(item.section == "trendings"){
-                  return (
+          {apiproduct?.map((item) => {
+            if (item.section == "trendings") {
+              return (
                 <>
-                <Cards imageUrl={item.imageUrl} item1={item.item} description1={item.description} price1={item.price} />
+                  <Link to={`/products/${item._id}`}>
+                    <Cards
+                      imageUrl={item.imageUrl}
+                      item1={item.item}
+                      description1={item.description}
+                      price1={item.price}
+                    />
+                  </Link>
                 </>
-               )
-               }
-            })
-          }
+              );
+            }
+          })}
         </div>
       </div>
       <h1 className="text-3xl text-red-600 font-bold text-center py-2  ">
         New Arrivals
       </h1>
-       <div className="flex justify-center">
+      <div className="flex justify-center">
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
-          {
-            apiproduct?.map((item)=>{
-               if(item.section == "newarrivals"){
-                  return (
+          {apiproduct?.map((item) => {
+            if (item.section == "newarrivals") {
+              return (
                 <>
-                <Cards imageUrl={item.imageUrl} item1={item.item} description1={item.description} price1={item.price} />
+                  <Link to={`/products/${item._id}`}>
+                  <Cards
+                    imageUrl={item.imageUrl}
+                    item1={item.item}
+                    description1={item.description}
+                    price1={item.price}
+                  />
+                  </Link>
                 </>
-               )
-               }
-            })
-          }
+              );
+            }
+          })}
         </div>
       </div>
     </div>
   );
 }
-

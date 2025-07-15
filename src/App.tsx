@@ -9,10 +9,11 @@ import Product from "./pages/Product";
 import About from "./pages/About";
 import Footer from "./components/Footer";
 import Carts from "./pages/Carts";
-
+import ProductDetails from "./pages/ProductDetails";
 function App() {
   return (
-    <>
+    <> 
+    
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,6 +23,7 @@ function App() {
         <Route path="/products" element={<Product />} />
         <Route path="/about" element={<About />} />
         <Route path="/carts" element={<Carts />} />
+        <Route path="/products/:id" element={<ProductDetails/>} />
       </Routes>
       <Footer />
     </>
