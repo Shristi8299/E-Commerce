@@ -1,7 +1,7 @@
 import Cards from "@/components/Cards";
-// import { products } from "@/data/products";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 interface Product {
   _id: string;
@@ -21,19 +21,23 @@ export default function Product() {
       setapiproduct(data.data);
     });
   }, []);
-  console.log(apiproduct);
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 mx-auto gap-6 py-4">
-        {apiproduct?.map(({ imageUrl, item, description, price }) => {
+        {apiproduct?.map(({ imageUrl, item, description, price, _id }) => {
           return (
-            <Cards
-              imageUrl={imageUrl}
-              item1={item}
-              description1={description}
-              price1={price}
-            />
+            <>
+              <Link to={`/products/${_id}`}>
+                <Cards
+                  imageUrl={imageUrl}
+                  item1={item}
+                  description1={description}
+                  price1={price}
+                  handleClick={() => console.log("button clicked")}
+                />
+              </Link>
+            </>
           );
         })}
       </div>
