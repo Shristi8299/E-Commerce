@@ -23,7 +23,7 @@ interface Product {
   createdAt: string;
 }
 
-export default function Home({addToCart}) {
+export default function Home({ addToCart }: { addToCart: any }) {
   const [apiproduct, setapiproduct] = useState<Product[]>();
   // I added this to seperate the two sections trending and newarrival , take a look and try to understand it
   const sections = [
@@ -38,7 +38,6 @@ export default function Home({addToCart}) {
     });
   }, []);
 
-  
   const arr = [
     {
       imgUrl: "images/photo1.jpg",
@@ -78,18 +77,17 @@ export default function Home({addToCart}) {
             </h1>
             <div className="flex justify-center">
               <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 py-2">
-                {filteredProducts
-                  ?.map((item) => (
-                    <Link to={`/products/${item._id}`} key={item._id}>
-                      <Cards
-                        imageUrl={item.imageUrl}
-                        item1={item.item}
-                        description1={item.description}
-                        price1={item.price}
-                        handleClick={()=>addToCart(item)}
-                      />
-                    </Link>
-                  ))}
+                {filteredProducts?.map((item) => (
+                  <Link to={`/products/${item._id}`} key={item._id}>
+                    <Cards
+                      imageUrl={item.imageUrl}
+                      item1={item.item}
+                      description1={item.description}
+                      price1={item.price}
+                      handleClick={() => addToCart(item)}
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

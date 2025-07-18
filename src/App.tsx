@@ -10,70 +10,94 @@ import About from "./pages/About";
 import Footer from "./components/Footer";
 import Carts from "./pages/Carts";
 import ProductDetails from "./pages/ProductDetails";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Test from "./pages/Test";
 
+type CartItem = {
+  _id: string;
+  quantity: number;
+};
+
 function App() {
+  const [cart, setCart] = useState<any>(() => {
+    const savedCartItem = localStorage.getItem("cart");
+    return savedCartItem ? JSON.parse(savedCartItem) : [];
+  });
+  const [searchTerm, setSearchTerm] = useState("");
 
- const [cart , setCart] = useState<any>(()=>{
-   
-  const savedCartItem = localStorage.getItem("cart");
-  return savedCartItem? JSON.parse(savedCartItem) : [] ;
- });
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
+  const addToCart = (cartProduct: any) => {
+    //   const existingItem = cart.find((item :any)=>(
+    //   item._id == cartProduct._id
+    // ))
 
+    // if(!existingItem){
+    //  setCart([...cart , cartProduct ]);
+    // }
 
-useEffect(()=>{
-  localStorage.setItem("cart",JSON.stringify(cart))
-},[cart])
+    setCart((prod: any) => {
+      console.log("prod = ", prod);
+      const existingItem = prod.find(
+        (item: any) => item._id == cartProduct._id
+      );
 
+      if (existingItem) {
+        return prod.map((item: any) =>
+          item._id == cartProduct._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prod, { ...cartProduct, quantity: 1 }];
+      }
+    });
+  };
 
-
-const addToCart =(cartProduct:any)=>{
-  
-  //   const existingItem = cart.find((item :any)=>( 
-  //   item._id == cartProduct._id 
-  // ))
-
-  // if(!existingItem){
-  //  setCart([...cart , cartProduct ]);
-  // }
-
-setCart((prod :any)=>{
- console.log("prod = " ,prod);
-   const existingItem = prod.find((item :any)=>( 
-    item._id == cartProduct._id 
-  ))
-
-if(existingItem){
-  return prod.map((item :any)=>(item._id == cartProduct._id)? {...item , quantity:item.quantity+1 } : item)
-}
-else{
-  return [...prod , {...cartProduct , quantity:1}]
-}
-})
-}
-
-
-  const [searchTerm , setSearchTerm] = useState("");
+  const increaseQuantity = (id: string) => {
+    setCart((prev: CartItem[]) =>
+      prev.map((item) =>
+        item._id == id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+  const decreaseQuantity = (id: string) => {
+    setCart((prev: CartItem[]) =>
+      prev.map((item) =>
+        item._id == id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+  };
 
   return (
     <>
-      <Navbar setSearchTerm={setSearchTerm}/>
+      <Navbar setSearchTerm={setSearchTerm} />
       <Routes>
-        <Route path="/" element={<Home addToCart={addToCart}/>} />
+        <Route path="/" element={<Home addToCart={addToCart} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contacts" element={<Contact />} />
-        <Route path="/products" element={<Product  addToCart={addToCart} searchTerm={searchTerm}/>} />
+        <Route
+          path="/products"
+          element={<Product addToCart={addToCart} searchTerm={searchTerm} />}
+        />
         <Route path="/about" element={<About />} />
-        <Route path="/carts" element={<Carts  cart={cart}/>} />
+        <Route
+          path="/carts"
+          element={
+            <Carts
+              cart={cart}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+            />
+          }
+        />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/test" element={<Test />} />
-        
       </Routes>
       <Footer />
-
     </>
   );
 }

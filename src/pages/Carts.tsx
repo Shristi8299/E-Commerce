@@ -1,4 +1,5 @@
 type CartItem = {
+  _id: string;
   imageUrl: string;
   item: string;
   price: number;
@@ -7,11 +8,19 @@ type CartItem = {
 
 interface CartsProps {
   cart: CartItem[];
-  onDelete: (index: number) => void;
-  onBuyNow: (item: CartItem) => void;
+  onDelete?: (index: number) => void;
+  onBuyNow?: (item: CartItem) => void;
+  increaseQuantity: (id: string) => void;
+  decreaseQuantity: (id: string) => void;
 }
 
-export default function Carts({ cart, onDelete, onBuyNow }: CartsProps) {
+export default function Carts({
+  cart,
+  onDelete,
+  onBuyNow,
+  increaseQuantity,
+  decreaseQuantity,
+}: CartsProps) {
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -36,23 +45,39 @@ export default function Carts({ cart, onDelete, onBuyNow }: CartsProps) {
 
               <div className="flex-1 md:ml-6 space-y-1 text-center md:text-left">
                 <h3 className="text-lg font-semibold">{cartItem.item}</h3>
-                <p className="text-gray-600">Price: ${cartItem.price.toFixed(2)}</p>
+                <p className="text-gray-600">
+                  Price: ${cartItem.price.toFixed(2)}
+                </p>
                 <p className="text-gray-600">Quantity: {cartItem.quantity}</p>
               </div>
 
               <div className="flex flex-col gap-2 mt-4 md:mt-0 md:ml-6">
                 <button
-                  onClick={() => onBuyNow(cartItem)}
+                  onClick={() => onBuyNow?.(cartItem)}
                   className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
                 >
                   Show Now
                 </button>
                 <button
-                  onClick={() => onDelete(index)}
+                  onClick={() => onDelete?.(index)}
                   className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
                 >
                   Delete
                 </button>
+                <div className=" flex gap-2 justify-center items-center">
+                  <button
+                    className=" h-8 w-8 bg-white rounded-md text-black font-bold text-2xl flex justify-center items-center text-center cursor-pointer"
+                    onClick={() => increaseQuantity(cartItem._id)}
+                  >
+                    +
+                  </button>
+                  <button
+                    className=" h-8 w-8 bg-white rounded-md text-black font-bold text-2xl flex justify-center items-center text-center cursor-pointer"
+                    onClick={() => decreaseQuantity(cartItem._id)}
+                  >
+                    -
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -65,4 +90,3 @@ export default function Carts({ cart, onDelete, onBuyNow }: CartsProps) {
     </div>
   );
 }
-
