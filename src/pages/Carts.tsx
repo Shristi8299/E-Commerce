@@ -1,3 +1,5 @@
+import Button from "@/components/Button";
+
 type CartItem = {
   _id: string;
   imageUrl: string;
@@ -8,27 +10,29 @@ type CartItem = {
 
 interface CartsProps {
   cart: CartItem[];
-  onDelete?: (index: number) => void;
+  onDelete: ( id: string) => void;
   onBuyNow?: (item: CartItem) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
 }
 
 export default function Carts({
-  cart,
+  cart = [],
   onDelete,
   onBuyNow,
   increaseQuantity,
   decreaseQuantity,
 }: CartsProps) {
-  const totalPrice = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  // const totalPrice = cart.reduce(
+  //   (sum, item) => sum + item.price * item.quantity,
+  //   0
+  // );
+
+  const totalPrice = 0;
 
   return (
     <div className="p-6">
-      {cart.length === 0 ? (
+      {cart?.length === 0 ? (
         <p className="text-center text-gray-500">Your cart is empty.</p>
       ) : (
         <div className="space-y-6">
@@ -58,13 +62,20 @@ export default function Carts({
                 >
                   Show Now
                 </button>
+
+
                 <button
-                  onClick={() => onDelete?.(index)}
+                  onClick={() => onDelete(cartItem._id)}
                   className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
                 >
                   Delete
                 </button>
+
+                {/* <Button buttonName={"Delete"}  onClick={() => onDelete?.(cart,index)} /> */}
+
+
                 <div className=" flex gap-2 justify-center items-center">
+                 
                   <button
                     className=" h-8 w-8 bg-white rounded-md text-black font-bold text-2xl flex justify-center items-center text-center cursor-pointer"
                     onClick={() => increaseQuantity(cartItem._id)}
