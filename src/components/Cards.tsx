@@ -6,6 +6,7 @@ type PropsItem = {
   description1: string;
   price1: number;
   handleClick: () => void;
+
 };
 
 // export default function Cards(props:PropsItem) {

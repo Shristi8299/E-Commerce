@@ -1,12 +1,20 @@
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+interface NavbarProps {
+  setSearchTerm: (term: string) => void;
+}
+
+
+export default function Navbar({setSearchTerm}:NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
+
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-white sticky top-0 z-50 border-b border-gray-300">
@@ -28,6 +36,11 @@ export default function Navbar() {
         <div className="relative hidden md:block">
           <Search className="absolute left-3 top-1.5 text-gray-500" />
           <input
+            onChange={
+              (e)=>{
+               setSearchTerm(e.target.value);
+               navigate("/products");
+          }}
             type="text"
             placeholder="search product......"
             className="border border-gray-300 pl-10 pr-3 py-1 rounded-xl"

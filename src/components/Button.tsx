@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 interface ButtonProps {
   buttonName: string;
   handleClick?: () => void;
 }
 
 export default function Button({ buttonName, handleClick }: ButtonProps) {
+  const navigate = useNavigate();
   return (
     <button
       className=" text-black p-1.5 mt-3 border-1 rounded-md hover:bg-black hover:text-white"
@@ -11,6 +13,7 @@ export default function Button({ buttonName, handleClick }: ButtonProps) {
         e.preventDefault();
         if (handleClick) {
           handleClick(); //try to figure out why the if statement is there
+          // navigate("/carts")
         }
       }}
     >

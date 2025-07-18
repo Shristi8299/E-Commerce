@@ -37,7 +37,7 @@ export const products = [
   {
     imageUrl: "images/product6.jpg",
     item: "Top",
-    description: "Printed Pure Cottom Top",
+    description: "Printed Pure Cotton Top",
     price: 2000,
     section: "newarrivals",
   },

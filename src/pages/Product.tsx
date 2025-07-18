@@ -13,33 +13,39 @@ interface Product {
   createdAt: string;
 }
 
-export default function Product() {
-  const [apiproduct, setapiproduct] = useState<Product[]>();
+interface ProductProps {
+  searchTerm: string;
+  addToCart:any
+}
+
+
+export default function Product({ searchTerm , addToCart }:ProductProps) {
+  const [apiproduct, setapiproduct] = useState<Product[]>([]);
+
   useEffect(() => {
-    const response = axios.get("http://localhost:3000/products");
-    response.then((data) => {
-      setapiproduct(data.data);
+    axios.get("http://localhost:3000/products").then((res) => {
+      setapiproduct(res.data);
     });
   }, []);
+
+  const filterSearchProduct = apiproduct.filter((product) =>
+    product.item.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 mx-auto gap-6 py-4">
-        {apiproduct?.map(({ imageUrl, item, description, price, _id }) => {
-          return (
-            <>
-              <Link to={`/products/${_id}`}>
-                <Cards
-                  imageUrl={imageUrl}
-                  item1={item}
-                  description1={description}
-                  price1={price}
-                  handleClick={() => console.log("button clicked")}
-                />
-              </Link>
-            </>
-          );
-        })}
+        {filterSearchProduct.map((item) => (
+          <Link key={item._id} to={`/products/${item._id}`}>
+            <Cards
+              imageUrl={item.imageUrl}
+              item1={item.item}
+              description1={item.description}
+              price1={item.price}
+              handleClick={()=>addToCart(item)}
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );
