@@ -1,5 +1,3 @@
-import Button from "@/components/Button";
-
 type CartItem = {
   _id: string;
   imageUrl: string;
@@ -10,8 +8,8 @@ type CartItem = {
 
 interface CartsProps {
   cart: CartItem[];
-  onDelete: ( id: string) => void;
-  onBuyNow?: (item: CartItem) => void;
+  onDelete: any;
+  onDelete2?: (youCanNameAnything: any[], sameForThis: number) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
 }
@@ -19,7 +17,7 @@ interface CartsProps {
 export default function Carts({
   cart = [],
   onDelete,
-  onBuyNow,
+  onDelete2,
   increaseQuantity,
   decreaseQuantity,
 }: CartsProps) {
@@ -57,15 +55,15 @@ export default function Carts({
 
               <div className="flex flex-col gap-2 mt-4 md:mt-0 md:ml-6">
                 <button
-                  onClick={() => onBuyNow?.(cartItem)}
+                  // onClick={() => onBuyNow?.(cartItem)}
                   className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
                 >
                   Show Now
                 </button>
 
-
                 <button
-                  onClick={() => onDelete(cartItem._id)}
+                  // onClick={() => onDelete(cartItem._id)}
+                  onClick={() => onDelete2?.(cart, index)}
                   className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition"
                 >
                   Delete
@@ -73,9 +71,7 @@ export default function Carts({
 
                 {/* <Button buttonName={"Delete"}  onClick={() => onDelete?.(cart,index)} /> */}
 
-
                 <div className=" flex gap-2 justify-center items-center">
-                 
                   <button
                     className=" h-8 w-8 bg-white rounded-md text-black font-bold text-2xl flex justify-center items-center text-center cursor-pointer"
                     onClick={() => increaseQuantity(cartItem._id)}

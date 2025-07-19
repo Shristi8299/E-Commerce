@@ -21,7 +21,7 @@ type CartItem = {
 function App() {
   const [cart, setCart] = useState<any>(() => {
     const savedCartItem = localStorage.getItem("cart");
-    return savedCartItem ? JSON.parse(savedCartItem??[]) : [];
+    return savedCartItem ? JSON.parse(savedCartItem) : [];
   });
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -39,6 +39,7 @@ function App() {
     // }
 
     setCart((prod: any) => {
+      console.log("prod = ", prod);
       const existingItem = prod.find(
         (item: any) => item._id == cartProduct._id
       );
@@ -63,32 +64,26 @@ function App() {
     );
   };
   const decreaseQuantity = (id: string) => {
-    setCart((prev: CartItem[]) =>
-      prev.map((item) =>
-       ( item._id == id && item.quantity > 0) ? { ...item, quantity:item.quantity-1}: item
-      )
+    setCart(
+      (prev: CartItem[]) =>
+        prev
+          .map((item) =>
+            item._id == id ? { ...item, quantity: item.quantity - 1 } : item
+          )
+          .filter((item) => item.quantity > 0) //filter them whose quantity is greater than 0
     );
-  
   };
 
+  const onDelete2 = (cart: any[], index: number) => {
+    const arr = [...cart];
+    arr.splice(index, 1);
+    setCart(arr);
+  };
 
-  // deletion product from cart feature 
-  // const onDelete = (cart , index) =>{
-  //   console.log("cartItem =" , cart);
-  //   cart.splice(index , 1)
-  //   console.log("cart after deletion=" , cart)
-  //   localStorage.setItem("cart", JSON.stringify(cart));
-  //   console.log("item deleted");
-  // }
+  const onDelete = (id: string) => {
+    setCart((prev: any) => prev.filter((item: any) => item._id !== id));
+  };
 
-  const onDelete = (id)=>{
-    console.log("id=" , id);
-    setCart((prev)=>{
-      const product = prev.filter((item)=>(item._id != id))
-      console.log(product);
-    })
-  }
- 
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} />
@@ -107,6 +102,7 @@ function App() {
           element={
             <Carts
               onDelete={onDelete}
+              onDelete2={onDelete2}
               cart={cart}
               increaseQuantity={increaseQuantity}
               decreaseQuantity={decreaseQuantity}
