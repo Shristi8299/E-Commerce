@@ -1,20 +1,31 @@
 import axios from "axios";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
 
+interface IFormInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
+const schema = Joi.object<IFormInput>({
+  email: Joi.string().email({ tlds: false }).required(),
+  password: Joi.string().min(6).max(100).required(),
+});
 export default function Login() {
-  const [error, setError] = useState<any>();
-  const [email, setEmail] = useState<any>("");
-  const user = {
-    email: "thanos@gmail.com",
-    password: "12345678",
-  };
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+ 
+  const { register:login, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+    resolver: joiResolver(schema),
+  });
+
+  const onSubmit = async (data1:IFormInput) => {
     try {
-      const res = await axios.post("http://localhost:3000/login", user);
-      console.log(res);
+      const res = await axios.post("http://localhost:3000/login", data1);
+      console.log(res.data.loginToken, "login successful");
+      localStorage.setItem("token", res.data.loginToken);
     } catch (error) {
-      setError(error.response.data.msg);
+      console.log(error, "login failed");
     }
   };
   return (
@@ -22,27 +33,29 @@ export default function Login() {
       <h1 className="font-bold text-center text-2xl mt-6">Log In</h1>
       <div className="mt-4  flex justify-center px-4 py-4 ">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log(e.target);
-          }}
+          onSubmit={handleSubmit(onSubmit)}
           className="w-full  max-w-md bg-white  py-15 p-6 rounded-xl   shadow-md hover:shadow-xl  space-y-4"
         >
           <div>
             <input
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              {...login("email")}
               placeholder="Enter email"
               className="w-full h-12 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-black"
             />
+             {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
             <input
+              {...login("password")}
               placeholder="Password"
               className="w-full  h-12 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-black"
             />
-            <p className=" bg-red-400 text-white w-fit">{error}</p>
+             {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            )}
           </div>
           <button
             type="submit"

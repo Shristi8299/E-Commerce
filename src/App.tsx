@@ -19,27 +19,19 @@ type CartItem = {
 };
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [cart, setCart] = useState<any>(() => {
     const savedCartItem = localStorage.getItem("cart");
     return savedCartItem ? JSON.parse(savedCartItem) : [];
   });
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (cartProduct: any) => {
-    //   const existingItem = cart.find((item :any)=>(
-    //   item._id == cartProduct._id
-    // ))
-
-    // if(!existingItem){
-    //  setCart([...cart , cartProduct ]);
-    // }
-
     setCart((prod: any) => {
-      console.log("prod = ", prod);
       const existingItem = prod.find(
         (item: any) => item._id == cartProduct._id
       );
