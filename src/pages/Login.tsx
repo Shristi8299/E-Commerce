@@ -2,7 +2,8 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 interface IFormInput {
   name: string;
   email: string;
@@ -13,8 +14,10 @@ const schema = Joi.object<IFormInput>({
   email: Joi.string().email({ tlds: false }).required(),
   password: Joi.string().min(6).max(100).required(),
 });
-export default function Login() {
- 
+export default function Login({apiUser}:{apiUser:any}) {
+
+  const navigate = useNavigate();
+  
   const { register:login, handleSubmit, formState: { errors } } = useForm<IFormInput>({
     resolver: joiResolver(schema),
   });
@@ -24,10 +27,15 @@ export default function Login() {
       const res = await axios.post("http://localhost:3000/login", data1);
       console.log(res.data.loginToken, "login successful");
       localStorage.setItem("token", res.data.loginToken);
+      navigate("/")
     } catch (error){
       console.log(error, "login failed");
     }
   };
+  useEffect(()=>{
+    apiUser && ( navigate("/"))
+  },[apiUser])
+
   return (
     <>
       <h1 className="font-bold text-center text-2xl mt-6">Log In</h1>

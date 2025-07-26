@@ -12,11 +12,14 @@ import Carts from "./pages/Carts";
 import ProductDetails from "./pages/ProductDetails";
 import { useEffect, useState } from "react";
 import Test from "./pages/Test";
+import axios from "axios";
+// import UserProvider, { UserContext, type User } from "./context/CartContext";
+import UserProvider, { UserContext, type CartItem } from "./context/CartContext";
 
-type CartItem = {
-  _id: string;
-  quantity: number;
-};
+// type CartItem = {
+//   _id: string;
+//   quantity: number;
+// };
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,27 +29,44 @@ function App() {
     return savedCartItem ? JSON.parse(savedCartItem) : [];
   });
 
+  const [apiUser , setApiUser] = useState<any>();
+
+  useEffect(()=>{
+ const func = async () =>{
+ 
+   const user = await axios.get("http://localhost:3000/middleware",
+      {headers : {Authorization:`Bearer ${localStorage.getItem("token")}`}})
+
+      setApiUser(user.data);
+
+   }
+   func();
+
+  },[])
+
+  console.log("apiUser=",apiUser);
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (cartProduct: any) => {
-    setCart((prod: any) => {
-      const existingItem = prod.find(
-        (item: any) => item._id == cartProduct._id
-      );
+  // const addToCart = (cartProduct: any) => {
+  //   setCart((prod: any) => {
+  //     const existingItem = prod.find(
+  //       (item: any) => item._id == cartProduct._id
+  //     );
 
-      if (existingItem) {
-        return prod.map((item: any) =>
-          item._id == cartProduct._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prod, { ...cartProduct, quantity: 1 }];
-      }
-    });
-  };
+  //     if (existingItem) {
+  //       return prod.map((item: any) =>
+  //         item._id == cartProduct._id
+  //           ? { ...item, quantity: item.quantity + 1 }
+  //           : item
+  //       );
+  //     } else {
+  //       return [...prod, { ...cartProduct, quantity: 1 }];
+  //     }
+  //   });
+  // };
 
   const increaseQuantity = (id: string) => {
     setCart((prev: CartItem[]) =>
@@ -76,17 +96,22 @@ function App() {
     setCart((prev: any) => prev.filter((item: any) => item._id !== id));
   };
 
+  
+
   return (
     <>
-      <Navbar setSearchTerm={setSearchTerm} />
+      <UserProvider>
+      <Navbar apiUser={apiUser} setSearchTerm={setSearchTerm} />
       <Routes>
-        <Route path="/" element={<Home addToCart={addToCart} />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/" element={<Home addToCart={addToCart} />} /> */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login apiUser={apiUser}/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/contacts" element={<Contact />} />
         <Route
           path="/products"
-          element={<Product addToCart={addToCart} searchTerm={searchTerm} />}
+          // element={<Product  apiUser={apiUser} addToCart={addToCart} searchTerm={searchTerm} />}
+          element={<Product  apiUser={apiUser}  searchTerm={searchTerm} />}
         />
         <Route path="/about" element={<About />} />
         <Route
@@ -105,6 +130,7 @@ function App() {
         <Route path="/test" element={<Test />} />
       </Routes>
       <Footer />
+      </UserProvider>
     </>
   );
 }

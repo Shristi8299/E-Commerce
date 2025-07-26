@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext} from "react";
 import { Carousel } from "antd";
 import Cards from "../components/Cards";
 import axios from "axios";
 import type Product from "./Product";
 import { Link } from "react-router-dom";
+import { UserContext } from "@/context/CartContext";
 
 const contentStyle: React.CSSProperties = {
   height: "400px",
@@ -23,7 +24,12 @@ interface Product {
   createdAt: string;
 }
 
-export default function Home({ addToCart }: { addToCart: any }) {
+// export default function Home({ addToCart }: { addToCart: any }) {
+  export default function Home() {
+  
+  const {addToCart} = useContext(UserContext);
+
+
   const [apiproduct, setapiproduct] = useState<Product[]>();
   // I added this to seperate the two sections trending and newarrival , take a look and try to understand it
   const sections = [
@@ -84,7 +90,8 @@ export default function Home({ addToCart }: { addToCart: any }) {
                       item1={item.item}
                       description1={item.description}
                       price1={item.price}
-                      handleClick={() => addToCart(item)}
+                      // handleClick={() => addToCart(item)}
+                       handleClick={() =>{addToCart(item)}}
                     />
                   </Link>
                 ))}

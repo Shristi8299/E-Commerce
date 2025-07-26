@@ -1,4 +1,12 @@
+import { UserContext } from "@/context/CartContext";
+import { useContext } from "react";
+
 export default function About() {
+  // const user1 = useContext(UserContext);
+  // console.log("user1 = ", user1?.name);
+
+ 
+  
   return (
     <div className="w-full">
       <img

@@ -15,13 +15,18 @@ interface Product {
 
 interface ProductProps {
   searchTerm: string;
-  addToCart:any
+  addToCart:any;
+  apiUser:any
 }
 
 
-export default function Product({ searchTerm , addToCart }:ProductProps) {
+export default function Product({ searchTerm , addToCart,apiUser}:ProductProps) {
   const [apiproduct, setapiproduct] = useState<Product[]>([]);
+  
 
+ 
+ 
+  
   useEffect(() => {
     axios.get("http://localhost:3000/products").then((res) => {
       setapiproduct(res.data);
@@ -31,7 +36,14 @@ export default function Product({ searchTerm , addToCart }:ProductProps) {
   const filterSearchProduct = apiproduct.filter((product) =>
     product.item.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+ 
+  if(!apiUser){
+    return (
+    <div className="min-h-[80vh]">
+      <p>user not logged in...</p>
+    </div>
+    )
+  }
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 mx-auto gap-6 py-4">

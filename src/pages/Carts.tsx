@@ -29,7 +29,7 @@ export default function Carts({
   const totalPrice = 0;
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-[80vh]">
       {cart?.length === 0 ? (
         <p className="text-center text-gray-500">Your cart is empty.</p>
       ) : (
@@ -97,3 +97,7 @@ export default function Carts({
     </div>
   );
 }
+
+
+
+

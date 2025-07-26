@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   setSearchTerm: (term: string) => void;
+  apiUser: any;
 }
 
+export default function Navbar({ setSearchTerm, apiUser }: NavbarProps) {
 
-export default function Navbar({setSearchTerm}:NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -26,21 +27,28 @@ export default function Navbar({setSearchTerm}:NavbarProps) {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
-          <NavLink to="/" className="hover:underline">Home</NavLink>
-          <NavLink to="/Products" className="hover:underline">Products</NavLink>
-          <NavLink to="/about" className="hover:underline">About</NavLink>
-          <NavLink to="/contacts" className="hover:underline">Contacts</NavLink>
+          <NavLink to="/" className="hover:underline">
+            Home
+          </NavLink>
+          <NavLink to="/Products" className="hover:underline">
+            Products
+          </NavLink>
+          <NavLink to="/about" className="hover:underline">
+            About
+          </NavLink>
+          <NavLink to="/contacts" className="hover:underline">
+            Contacts
+          </NavLink>
         </div>
 
         {/* Search Bar (Desktop) */}
         <div className="relative hidden md:block">
           <Search className="absolute left-3 top-1.5 text-gray-500" />
           <input
-            onChange={
-              (e)=>{
-               setSearchTerm(e.target.value);
-               navigate("/products");
-          }}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              navigate("/products");
+            }}
             type="text"
             placeholder="search product......"
             className="border border-gray-300 pl-10 pr-3 py-1 rounded-xl"
@@ -52,18 +60,27 @@ export default function Navbar({setSearchTerm}:NavbarProps) {
           <NavLink to="/carts">
             <ShoppingCart />
           </NavLink>
+
+         {
+
+        !apiUser ?  
+          <>
           <Link
-            to="/Login"
-            className="hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1"
-          >
-            Login
-          </Link>
+              to="/Login"
+              className="hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1"
+            >
+              Login
+            </Link> 
           <Link
             to="/register"
             className="hover:bg-gray-200 border border-gray-300 rounded-sm px-4 py-1"
           >
             Register
           </Link>
+          </>
+          : <p>Logged</p>
+         }
+
 
           {/* Hamburger Button (Mobile) */}
           <button onClick={toggleMenu} className="md:hidden">
@@ -82,21 +99,32 @@ export default function Navbar({setSearchTerm}:NavbarProps) {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/Products" onClick={closeMenu} className="hover:underline">
+              <NavLink
+                to="/Products"
+                onClick={closeMenu}
+                className="hover:underline"
+              >
                 Products
               </NavLink>
             </li>
             <li>
-              <NavLink to="/about" onClick={closeMenu} className="hover:underline">
+              <NavLink
+                to="/about"
+                onClick={closeMenu}
+                className="hover:underline"
+              >
                 About
               </NavLink>
             </li>
             <li>
-              <NavLink to="/contacts" onClick={closeMenu} className="hover:underline">
+              <NavLink
+                to="/contacts"
+                onClick={closeMenu}
+                className="hover:underline"
+              >
                 Contacts
               </NavLink>
             </li>
-
           </ul>
         </div>
       )}
