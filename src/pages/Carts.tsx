@@ -1,32 +1,13 @@
-type CartItem = {
-  _id: string;
-  imageUrl: string;
-  item: string;
-  price: number;
-  quantity: number;
-};
+import { CartContext, type ContextItems } from "@/context/CartContext";
+import { useContext } from "react";
 
-interface CartsProps {
-  cart: CartItem[];
-  onDelete: any;
-  onDelete2?: (youCanNameAnything: any[], sameForThis: number) => void;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
-}
-
-export default function Carts({
-  cart = [],
-  onDelete,
-  onDelete2,
-  increaseQuantity,
-  decreaseQuantity,
-}: CartsProps) {
-  // const totalPrice = cart.reduce(
-  //   (sum, item) => sum + item.price * item.quantity,
-  //   0
-  // );
-
-  const totalPrice = 0;
+export default function Carts() {
+  const { cart, onDelete2, increaseQuantity, decreaseQuantity } =
+    useContext<ContextItems>(CartContext);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div className="p-6 min-h-[80vh]">
@@ -97,7 +78,3 @@ export default function Carts({
     </div>
   );
 }
-
-
-
-

@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import Test from "./pages/Test";
 import axios from "axios";
 // import UserProvider, { UserContext, type User } from "./context/CartContext";
-import UserProvider, { UserContext, type CartItem } from "./context/CartContext";
+import CartProvider from "./context/CartContext";
 
 // type CartItem = {
 //   _id: string;
@@ -23,114 +23,52 @@ import UserProvider, { UserContext, type CartItem } from "./context/CartContext"
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [cart, setCart] = useState<any>(() => {
-    const savedCartItem = localStorage.getItem("cart");
-    return savedCartItem ? JSON.parse(savedCartItem) : [];
-  });
-
-  const [apiUser , setApiUser] = useState<any>();
-
-  useEffect(()=>{
- const func = async () =>{
- 
-   const user = await axios.get("http://localhost:3000/middleware",
-      {headers : {Authorization:`Bearer ${localStorage.getItem("token")}`}})
-
-      setApiUser(user.data);
-
-   }
-   func();
-
-  },[])
-
-  console.log("apiUser=",apiUser);
+  const [apiUser, setApiUser] = useState<any>();
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    const func = async () => {
+      const user = await axios.get("http://localhost:3000/middleware", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
 
-  // const addToCart = (cartProduct: any) => {
-  //   setCart((prod: any) => {
-  //     const existingItem = prod.find(
-  //       (item: any) => item._id == cartProduct._id
-  //     );
-
-  //     if (existingItem) {
-  //       return prod.map((item: any) =>
-  //         item._id == cartProduct._id
-  //           ? { ...item, quantity: item.quantity + 1 }
-  //           : item
-  //       );
-  //     } else {
-  //       return [...prod, { ...cartProduct, quantity: 1 }];
-  //     }
-  //   });
-  // };
-
-  const increaseQuantity = (id: string) => {
-    setCart((prev: CartItem[]) =>
-      prev.map((item) =>
-        item._id == id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-  const decreaseQuantity = (id: string) => {
-    setCart(
-      (prev: CartItem[]) =>
-        prev
-          .map((item) =>
-            item._id == id ? { ...item, quantity: item.quantity - 1 } : item
-          )
-          .filter((item) => item.quantity > 0) //filter them whose quantity is greater than 0
-    );
-  };
-
-  const onDelete2 = (cart: any[], index: number) => {
-    const arr = [...cart];
-    arr.splice(index, 1);
-    setCart(arr);
-  };
-
-  const onDelete = (id: string) => {
-    setCart((prev: any) => prev.filter((item: any) => item._id !== id));
-  };
-
-  
+      setApiUser(user.data);
+    };
+    func();
+  }, []);
 
   return (
     <>
-      <UserProvider>
-      <Navbar apiUser={apiUser} setSearchTerm={setSearchTerm} />
-      <Routes>
-        {/* <Route path="/" element={<Home addToCart={addToCart} />} /> */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login apiUser={apiUser}/>} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contacts" element={<Contact />} />
-        <Route
-          path="/products"
-          // element={<Product  apiUser={apiUser} addToCart={addToCart} searchTerm={searchTerm} />}
-          element={<Product  apiUser={apiUser}  searchTerm={searchTerm} />}
-        />
-        <Route path="/about" element={<About />} />
-        <Route
-          path="/carts"
-          element={
-            <Carts
-              onDelete={onDelete}
-              onDelete2={onDelete2}
-              cart={cart}
-              increaseQuantity={increaseQuantity}
-              decreaseQuantity={decreaseQuantity}
-            />
-          }
-        />
-        <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/test" element={<Test />} />
-      </Routes>
-      <Footer />
-      </UserProvider>
+      <CartProvider>
+        <Navbar apiUser={apiUser} setSearchTerm={setSearchTerm} />
+        <Routes>
+          {/* <Route path="/" element={<Home addToCart={addToCart} />} /> */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login apiUser={apiUser} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/contacts" element={<Contact />} />
+          <Route
+            path="/products"
+            // element={<Product  apiUser={apiUser} addToCart={addToCart} searchTerm={searchTerm} />}
+            element={<Product apiUser={apiUser} searchTerm={searchTerm} />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/carts"
+            element={
+              <Carts
+              // onDelete={onDelete}
+              // onDelete2={onDelete2}
+              // cart={cart}
+              // increaseQuantity={increaseQuantity}
+              // decreaseQuantity={decreaseQuantity}
+              />
+            }
+          />
+          <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/test" element={<Test />} />
+        </Routes>
+        <Footer />
+      </CartProvider>
     </>
   );
 }

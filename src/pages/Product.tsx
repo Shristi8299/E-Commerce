@@ -1,7 +1,8 @@
 import Cards from "@/components/Cards";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { CartContext } from "@/context/CartContext";
 
 interface Product {
   _id: string;
@@ -15,18 +16,13 @@ interface Product {
 
 interface ProductProps {
   searchTerm: string;
-  addToCart:any;
-  apiUser:any
+  apiUser: any;
 }
 
-
-export default function Product({ searchTerm , addToCart,apiUser}:ProductProps) {
+export default function Product({ searchTerm, apiUser }: ProductProps) {
   const [apiproduct, setapiproduct] = useState<Product[]>([]);
-  
+  const { addToCart } = useContext(CartContext);
 
- 
- 
-  
   useEffect(() => {
     axios.get("http://localhost:3000/products").then((res) => {
       setapiproduct(res.data);
@@ -36,13 +32,13 @@ export default function Product({ searchTerm , addToCart,apiUser}:ProductProps) 
   const filterSearchProduct = apiproduct.filter((product) =>
     product.item.toLowerCase().includes(searchTerm.toLowerCase())
   );
- 
-  if(!apiUser){
+
+  if (!apiUser) {
     return (
-    <div className="min-h-[80vh]">
-      <p>user not logged in...</p>
-    </div>
-    )
+      <div className="min-h-[80vh]">
+        <p>user not logged in...</p>
+      </div>
+    );
   }
   return (
     <div className="flex flex-col items-center justify-center">
@@ -54,7 +50,7 @@ export default function Product({ searchTerm , addToCart,apiUser}:ProductProps) 
               item1={item.item}
               description1={item.description}
               price1={item.price}
-              handleClick={()=>addToCart(item)}
+              handleClick={() => addToCart(item)}
             />
           </Link>
         ))}

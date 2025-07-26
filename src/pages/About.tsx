@@ -1,12 +1,10 @@
-import { UserContext } from "@/context/CartContext";
+import { CartContext } from "@/context/CartContext";
 import { useContext } from "react";
 
 export default function About() {
   // const user1 = useContext(UserContext);
   // console.log("user1 = ", user1?.name);
 
- 
-  
   return (
     <div className="w-full">
       <img
@@ -21,9 +19,10 @@ export default function About() {
           Our Mission
         </h1>
         <p className="text-lg text-gray-700 leading-relaxed text-center">
-          To empower customers with a delightful shopping experience, built on trust,
-          convenience, and value. We aim to be your go-to destination for everyday needs,
-          backed by top-notch customer service and fast delivery.
+          To empower customers with a delightful shopping experience, built on
+          trust, convenience, and value. We aim to be your go-to destination for
+          everyday needs, backed by top-notch customer service and fast
+          delivery.
         </p>
       </div>
     </div>
